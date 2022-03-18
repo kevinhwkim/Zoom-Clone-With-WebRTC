@@ -1,6 +1,10 @@
 const express = require('express')
+const { ExpressPeerServer } = require('peer');
 const app = express()
 const server = require('http').Server(app)
+const peerServer = ExpressPeerServer(app.listen(3001), {
+  path: '/'
+})
 const io = require('socket.io')(server)
 const { v4: uuidV4 } = require('uuid')
 
@@ -26,4 +30,5 @@ io.on('connection', socket => {
   })
 })
 
+app.use('/', peerServer);
 server.listen(3000)
